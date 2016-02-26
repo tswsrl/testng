@@ -1,0 +1,152 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <link type="style/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+        <style type="text/css">
+            [ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}
+        </style>
+        <script>
+/*! modernizr 3.3.1 (Custom Build) | MIT *
+ * http://modernizr.com/download/?-setclasses !*/
+!function(n,e,s){function o(n,e){return typeof n===e}function a(n){var e=f.className,s=Modernizr._config.classPrefix||"";if(l&&(e=e.baseVal),Modernizr._config.enableJSClass){var o=new RegExp("(^|\\s)"+s+"no-js(\\s|$)");e=e.replace(o,"$1"+s+"js$2")}Modernizr._config.enableClasses&&(e+=" "+s+n.join(" "+s),l?f.className.baseVal=e:f.className=e)}function i(){var n,e,s,a,i,f,l;for(var c in r)if(r.hasOwnProperty(c)){if(n=[],e=r[c],e.name&&(n.push(e.name.toLowerCase()),e.options&&e.options.aliases&&e.options.aliases.length))for(s=0;s<e.options.aliases.length;s++)n.push(e.options.aliases[s].toLowerCase());for(a=o(e.fn,"function")?e.fn():e.fn,i=0;i<n.length;i++)f=n[i],l=f.split("."),1===l.length?Modernizr[l[0]]=a:(!Modernizr[l[0]]||Modernizr[l[0]]instanceof Boolean||(Modernizr[l[0]]=new Boolean(Modernizr[l[0]])),Modernizr[l[0]][l[1]]=a),t.push((a?"":"no-")+l.join("-"))}}var t=[],f=e.documentElement,l="svg"===f.nodeName.toLowerCase(),r=[],c={_version:"3.3.1",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(n,e){var s=this;setTimeout(function(){e(s[n])},0)},addTest:function(n,e,s){r.push({name:n,fn:e,options:s})},addAsyncTest:function(n){r.push({name:null,fn:n})}},Modernizr=function(){};Modernizr.prototype=c,Modernizr=new Modernizr,i(),a(t),delete c.addTest,delete c.addAsyncTest;for(var u=0;u<Modernizr._q.length;u++)Modernizr._q[u]();n.Modernizr=Modernizr}(window,document);
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Angular Two Way Binding Sample on Silex</h1>
+        </div>
+
+        <div id="app" class="container" data-ng-app="irajson">
+            <div id="products-controls" data-ira-product-controls>
+                <form name="searchForm" class="form-inline" data-ng-submit="search()">
+                    <div class="form-group">
+                        <label for="product" class="control-label">Product name</label>
+                        <input name="searchedProduct" type="text" class="form-control" data-ng-model="searchedProduct">
+                    </div>
+                    <button class="btn btn-primary" data-ng-disabled="searchedProduct.length == 0">Search</button>
+                </form>
+            </div>
+            <div id="products-results" class="ng-cloak" data-ng-if="products.length &gt; 0">
+                <h2>Showing {{totalProducts}} {{totalProducts, plural, =1 {product} other {products}}} for {{productName}}</h2>
+                <div class="panel panel-default" data-ng-repeat="product in products track by $index">
+                    <div class="panel-heading">
+                        {{product.name}}
+                    </div>
+                    <div class="panel-body">
+                        {{product.description}}
+                    </div>
+                </div>
+            </div>
+            <nav class="ng-cloak">
+                <ul class="pagination" data-ira-products-pagination>
+                    <li data-ng-if="currentPage &gt; 1">
+                        <a href="" data-ng-click="setPage(currentPage - 1)" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li data-ng-repeat="page in pagesRange" data-ng-class="{active: page == currentPage}"><a href="" data-ng-click="setPage(page)">{{page}}</a></li>
+                    <li data-ng-if="currentPage &lt; totalPages">
+                        <a href="" data-ng-click="setPage(currentPage + 1)" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+          </nav>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular-message-format.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/i18n/angular-locale_it.js"></script>
+        <script>
+(function (angular, $) {
+
+    angular.module('tsw', [])
+        .factory('maths', function () {
+            return {
+                range: function (lower, upper) {
+                    var i = lower,
+                        output = [];
+                    while (i <= upper) {
+                        output.push(i);
+                        i += 1;
+                    }
+                    return output;
+                },
+                rand: function (min, max) {
+                    var gen;
+                    gen = Math.random();
+                    return min + Math.floor(gen * (max - min + 1));
+                }
+            };
+        });
+
+    var irajson = angular.module('irajson', ['tsw', 'ngMessageFormat']);
+    irajson.constant('iraDefaultProductName', '')
+    irajson.directive('iraProductControls', function () {
+        return {
+            restrict: 'A',
+            controller: ['$scope', '$http', 'maths', 'iraDefaultProductName', function ($scope, $http, maths, iraDefaultProductName) {
+
+                $scope.searchedProduct = iraDefaultProductName;
+                $scope.productName = iraDefaultProductName;
+                $scope.products = [];
+
+                function reset(){
+                    $scope.products.splice(0, $scope.products.length);
+                    $scope.currentPage = 1;
+                    $scope.totalPages = 0;
+                    $scope.totalProducts = 0;
+                }
+
+                reset();
+
+                $scope.search = function () {
+                    reset();
+                    $scope.productName = $scope.searchedProduct;
+                    $scope.searchProduct();
+                };
+
+                $scope.searchProduct = function () {
+                    $http.get('/products/' + $scope.productName + '/' + $scope.currentPage).then(function (response) {
+
+                        var products = angular.copy(response.data.products);
+                        products.unshift(0, $scope.products.length);
+                        [].splice.apply($scope.products, products);
+
+                        $scope.totalPages = response.data.pages;
+
+                        $scope.totalProducts = response.data.total;
+
+                    });
+                };
+
+                $scope.setPage = function (page) {
+                    $scope.currentPage = parseInt('0' + page);
+                    $scope.searchProduct();
+                };
+
+            }]
+        };
+    });
+    irajson.directive('iraProductsPagination', function () {
+        return {
+            restrict: 'A',
+            controller: ['$scope', 'maths', function ($scope, maths) {
+
+                $scope.pagesRange = [];
+
+                $scope.$watch('totalPages', function (newValue) {
+                    var pages = maths.range(1, $scope.totalPages);
+                    pages.unshift(0, $scope.totalPages);
+                    [].splice.apply($scope.pagesRange, pages);
+                });
+
+            }]
+        };
+    });
+}(angular, jQuery));
+        </script>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+Thumbs.db
+Desktop.ini
+._*
+.DS_Store
+vendor
+composer.lock
+composer.phar
+nbproject
