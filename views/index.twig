@@ -16,8 +16,8 @@
             <h1>Angular Two Way Binding Sample on Silex</h1>
         </div>
 
-        <div id="app" class="container" data-ng-app="irajson">
-            <div id="products-controls" data-ira-product-controls>
+        <div id="app" class="container" data-ng-app="samplejson">
+            <div id="products-controls" data-sample-product-controls>
                 <form name="searchForm" class="form-inline" data-ng-submit="search()">
                     <div class="form-group">
                         <label for="product" class="control-label">Product name</label>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <nav class="ng-cloak">
-                <ul class="pagination" data-ira-products-pagination>
+                <ul class="pagination" data-sample-products-pagination>
                     <li data-ng-if="currentPage &gt; 1">
                         <a href="" data-ng-click="setPage(currentPage - 1)" aria-label="Previous">
                           <span aria-hidden="true">&laquo;</span>
@@ -82,15 +82,15 @@
             };
         });
 
-    var irajson = angular.module('irajson', ['tsw', 'ngMessageFormat']);
-    irajson.constant('iraDefaultProductName', '')
-    irajson.directive('iraProductControls', function () {
+    var samplejson = angular.module('samplejson', ['tsw', 'ngMessageFormat']);
+    samplejson.constant('sampleDefaultProductName', '')
+    samplejson.directive('sampleProductControls', function () {
         return {
             restrict: 'A',
-            controller: ['$scope', '$http', 'maths', 'iraDefaultProductName', function ($scope, $http, maths, iraDefaultProductName) {
+            controller: ['$scope', '$http', 'maths', 'sampleDefaultProductName', function ($scope, $http, maths, sampleDefaultProductName) {
 
-                $scope.searchedProduct = iraDefaultProductName;
-                $scope.productName = iraDefaultProductName;
+                $scope.searchedProduct = sampleDefaultProductName;
+                $scope.productName = sampleDefaultProductName;
                 $scope.products = [];
 
                 function reset(){
@@ -130,7 +130,7 @@
             }]
         };
     });
-    irajson.directive('iraProductsPagination', function () {
+    samplejson.directive('sampleProductsPagination', function () {
         return {
             restrict: 'A',
             controller: ['$scope', 'maths', function ($scope, maths) {
